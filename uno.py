@@ -12,7 +12,7 @@ def draw(): #funtion to generate a new card
     RC = random.randrange(0,3) #RC is short for Random Color
     RD = RV #RD is the same as RV but naming it RD looks nicer (it stands for Random Draw)
     drawncard = card(colors[RC], values[RV], draws[RD]) #declares drawncard and assigns it with the card class
-    if (drawncard.value == w || drawncard.value == wd): #if the card is wild then set the color to "W" so we can change it during play
+    if (drawncard.value == "w" or "wd"): #if the card is wild then set the color to "W" so we can change it during play
         drawncard.color = colors[4] 
     return drawncard.color, drawncard.value, drawncard.draws #return all values of the card drawn
 
