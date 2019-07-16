@@ -1,2 +1,2 @@
 # Uno
-Uno in python
+Uno In Python
