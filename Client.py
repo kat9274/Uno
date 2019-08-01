@@ -2,7 +2,7 @@ import socket, json
 
 while True:
     try:
-        Server = input("What IP do you want to connect to? >>> ")
+        Server = "192.168.1.100" #input("What IP do you want to connect to? >>> ")
         Port = 5000
         
         ClientSocket = socket.socket()
@@ -17,14 +17,13 @@ while True:
 
 Recive = ["", "", ""]
 
-while Recive[0] != "GameOver":
+while Recive[1] != "GameOver":
     Recive = ClientSocket.recv(1024).decode()
-    Recive = Recive.split(",")
-    if Recive[0] == socket.gethostbyname(socket.gethostname()):
-        if Recive[2] == "Input":
-            ClientSocket.send(input(Recive[1]).encode())
-        elif Recive[2] == "Print":
-            print(Recive[1])
+    Recive = Recive.split("|")
+    if Recive[1] == "Input":
+        ClientSocket.send(input(Recive[0]).encode())
+    elif Recive[1] == "Print":
+        print(Recive[0])
         
-print(Recive[1])    
+print(Recive[0])    
 ClientSocket.close()  #Close the connection after the server sends "GameOver"
