@@ -3,7 +3,7 @@ import socket, json
 while True:
     try:
         Server = input("What IP do you want to connect to? >>> ")
-        Port = 5000
+        Port = 5001
         
         ClientSocket = socket.socket()
         ClientSocket.connect((Server, Port))
