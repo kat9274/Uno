@@ -17,6 +17,7 @@ class Card:
         else:
             self.Color = "W"
         self.Value = Value
+        self.Out = f"{self.Color}{Value}"
 
 def Ask(ConnectionObject, Question, InputText):
     ConnectionObject.Send(f"{Question}`y`{InputText}")
@@ -61,14 +62,14 @@ def Turn(Player):
             Ints.append(i)
         i = i + 1
 
-    SendToAll(f"{Player.Name}'s turn!")
+    SendToAll(f"{Player.Name}'s turn!\n{Player.Name} has {len(Player.Hand)} cards.") #didnt work
 
     if len(Usable) > 0:
-        #OTHER INFO (SEND SOME TO ALL SEND SOME TO ONLY PLAYER)
+        Player.Send(f"Current card: {Top.Out}\nYour cards: {CardOut(Player.Hand)}\nYour usable cards: {CardOut(Usable)}")
 
         while True:
             try:
-                In = int(Ask(Player, f"What card do you want to play? 1-{str(len(Usable))}", ">>> "))
+                In = int(Ask(Player, f"\nWhat card do you want to play? 1-{str(len(Usable))}", ">>> "))
                 if In < int(len(Usable) + 1) and In > 0:
                     In = In - 1
                     break
@@ -129,6 +130,7 @@ def Turn(Player):
         if len(Player.Hand) > 0:
             Player.Send(f"You have no usable cards, so you will draw.`n` ")
             Draw(Player, 1)
+            #just kinda stops here because the first connection just closes for no reason
         elif len(Player.Hand) < 0:
             SendToAll(f"{Player.Name} won!")
             GameOver = True
