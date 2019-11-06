@@ -13,7 +13,7 @@ def Parse():
     return Message
 
 while True:
-    Host = gethostname() #str(input("Server Ip >>> "))
+    Host = str(input("Server Ip >>> "))
     Status = Connect(Host, 9274)
     if Status == 0:
         print("Connected.")
