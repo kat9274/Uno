@@ -1,39 +1,38 @@
 from socket import *
+from multiprocessing import Process
 Socket = socket()
 
-class Connect:
-    def __init__(self):
-        try:
-            self.C, self.Address = Socket.accept()
-            print(self.Address[0], "connected.")
-        except Exception as e:
-            print("ConnectionError: ", str(e.__class__.__name__))
-            return 1
-
-    def Send(self, Message):
-        try:
-            self.C.send(str(Message).encode())
-            return 0
-        except Exception as e:
-            print("ConnectionError: ", str(e.__class__.__name__))
-            return 1
-            
-
-    def Get(self):
-        try:
-            Message = self.C.recv(4096).decode()
-            return Message
-        except Exception as e:
-            print("ConnectionError: ", str(e.__class__.__name__))
-            return 1
-        
 def Start(Port):
     try:
-        Port = Port
         Socket.bind(('', Port))
         Socket.listen()
-        print("Listening...")
+        print(f"Listening...")
         return 0
     except Exception as e:
-        print("ConnectionError: ", str(e.__class__.__name__))
+        print(f"ConnectionError: {e.__class__.__name__} in Start()")
         return 1
+
+def Connect():
+    try:
+        C, A = Socket.accept()
+        print(f"{A[0]} connected.")
+        return C
+    except Exception as e:
+        print(f"ConnectionError: {e.__class__.__name__}")
+
+def Send(C, Message):
+    try:
+        if __name__ == f"__main__":
+            P = Process(target=C.send, args=(f"{Message}".encode(), ))
+            P.start() #Start the process
+            P.join() #Wait to finish
+        return 0
+    except Exception as e:
+        print(f"ConnectionError: {e.__class__.__name__}")
+
+def Get(C):
+    try:
+        Message = C.recv(4096).decode()
+        return Message
+    except Exception as e:
+        print(f"ConnectionError: {e.__class__.__name__}")
