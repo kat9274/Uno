@@ -20,7 +20,7 @@ class Card:
 
 def Ask(C, Question, InputText):
     Send(C, f"{Question}`y`{InputText}")
-    Message = ConnectionObject.Get(C)
+    Message = Get(C)
     return Message
 
 def SendToAll(Message):
