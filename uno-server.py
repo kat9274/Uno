@@ -4,11 +4,10 @@ from operator import add, sub
 Start(9274)
 
 class Player:
-    def __init__(self, Name, ConnectionObject):
+    def __init__(self, Name, C):
         self.Name = Name
         self.Hand = []
-        self.Send = ConnectionObject.Send
-        self.Get = ConnectionObject.Get
+        self.C = C
 
 class Card:
     def __init__(self, Color, Value):
@@ -19,9 +18,9 @@ class Card:
         self.Value = Value
         self.Out = f"{self.Color}{Value}"
 
-def Ask(ConnectionObject, Question, InputText):
-    ConnectionObject.Send(f"{Question}`y`{InputText}")
-    Message = ConnectionObject.Get()
+def Ask(C, Question, InputText):
+    Send(C, f"{Question}`y`{InputText}")
+    Message = ConnectionObject.Get(C)
     return Message
 
 def SendToAll(Message):
@@ -29,7 +28,7 @@ def SendToAll(Message):
         Message = "`GameOver` "
     i = 0
     while i < len(Players):
-        Players[i].Send(f"{Message}`n` ")
+        Send(Players[i].C, f"{Message}`n` ")
         i = i + 1
 
 def CardOut(List):
@@ -62,21 +61,21 @@ def Turn(Player):
             Ints.append(i)
         i = i + 1
 
-    SendToAll(f"{Player.Name}'s turn!\n{Player.Name} has {len(Player.Hand)} cards.") #didnt work
+    SendToAll(f"{Player.Name}'s turn!\n{Player.Name} has {len(Player.Hand)} cards.")
 
     if len(Usable) > 0:
-        Player.Send(f"Current card: {Top.Out}\nYour cards: {CardOut(Player.Hand)}\nYour usable cards: {CardOut(Usable)}")
+        Send(Player.C, f"Current card: {Top.Out}\nYour cards: {CardOut(Player.Hand)}\nYour usable cards: {CardOut(Usable)}")
 
         while True:
             try:
-                In = int(Ask(Player, f"\nWhat card do you want to play? 1-{str(len(Usable))}", ">>> "))
+                In = int(Ask(Player.C, f"\nWhat card do you want to play? 1-{str(len(Usable))}", ">>> "))
                 if In < int(len(Usable) + 1) and In > 0:
                     In = In - 1
                     break
                 else:
                     raise ValueError
             except ValueError:
-                Player.Send(f"Please input a valid number`n` ")
+                Send(Player.C, f"Please input a valid number`n` ")
                 pass
 
         Top = Usable[In]
@@ -84,7 +83,7 @@ def Turn(Player):
         if Top.Color == "W":
             while True:
                 try:
-                    Color = str(Ask(Player, f"What color? (r/g/b/y)", ">>> ")).upper()
+                    Color = str(Ask(Player.C, f"What color? (r/g/b/y)", ">>> ")).upper()
                     if "Y" in Color:
                         Top.Color = "Y"
                     elif "G" in Color:
@@ -94,7 +93,7 @@ def Turn(Player):
                     elif "B" in Color:
                         Top.Color = "B"
                     else:
-                        Player.Send(f"Not a valid input!`n` ")
+                        Send(Player.C, f"Not a valid input!`n` ")
                         pass
                     if Top.Color in Colors:
                         break
@@ -128,7 +127,7 @@ def Turn(Player):
 
     elif len(Usable) == 0:
         if len(Player.Hand) > 0:
-            Player.Send(f"You have no usable cards, so you will draw.`n` ")
+            Send(Player.C, f"You have no usable cards, so you will draw.`n` ")
             Draw(Player, 1)
             #just kinda stops here because the first connection just closes for no reason
         elif len(Player.Hand) < 0:
@@ -162,7 +161,6 @@ while True:
 i = 0
 while i < NumberOfPlayers:
     TempConnect = Connect()
-    TempConnect
     TempPlayer = Player(Ask(TempConnect, f"What is your name?", f">>> "), TempConnect)
     Draw(TempPlayer, 7)
     Players.append(TempPlayer)
