@@ -2,7 +2,7 @@ from client import *
 
 def Parse():
     global GameOver
-    Message = Get().decode().split('`')
+    Message = Get().split('`')
     print(f"{Message[0]}")
     if Message[1] == 'y':
         Send(f"{input(f'{Message[2]}')}")
