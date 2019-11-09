@@ -64,7 +64,7 @@ def Turn(Player):
     SendToAll(f"{Player.Name}'s turn!\n{Player.Name} has {len(Player.Hand)} cards.")
 
     if len(Usable) > 0:
-        Send(Player.C, f"Current card: {Top.Out}\nYour cards: {CardOut(Player.Hand)}\nYour usable cards: {CardOut(Usable)}")
+        Send(Player.C, f"Current card: {Top.Out}\nYour cards: {CardOut(Player.Hand)}\nYour usable cards: {CardOut(Usable)}`n`>>> ")
 
         while True:
             try:
