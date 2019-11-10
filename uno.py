@@ -5,7 +5,7 @@ def Parse():
     Message = Get().split('`')
     print(f"{Message[0]}")
     if Message[1] == 'y':
-        Send(f"{input(f'{Message[2]}')}")
+        Send(f"{input(f'{Message[2]}')}") #DOES NOT SHOW ON SECOND PLAYER
     elif Message[1] == 'g':
         GameOver = True
 

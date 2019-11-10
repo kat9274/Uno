@@ -20,7 +20,7 @@ class Card:
 
 def Ask(C, Question, InputText):
     Send(C, f"{Question}`y`{InputText}")
-    Message = Get(C)
+    Message = Get(C) #Stops on second player (Doesn't get message)
     return Message
 
 def SendToAll(Message):
@@ -70,6 +70,7 @@ def Turn(Player):
             try:
                 In = int(Ask(Player.C, f"\nWhat card do you want to play? 1-{str(len(Usable))}", ">>> "))
                 if In < int(len(Usable) + 1) and In > 0:
+                    print("In is in range")
                     In = In - 1
                     break
                 else:
@@ -105,15 +106,19 @@ def Turn(Player):
 
         if Top.Value == "D":
             Draw(Next, 4)
+            print("DRAW 4")
             SendToAll(f"{Next.Name} had to draw 4 cards!")
             Skip = True
         if Top.Value == "D2":
             Draw(Next, 2)
+            print("DRAW 2")
             SendToAll(f"{Next.Name} had to draw 2 cards!")
             Skip = True
         if Top.Value == "S":
+            print("Skip")
             Skip = True
         if Top.Value == "R":
+            print("Reverser")
             Reverse = not Reverse
             SendToAll(f"Reverse!")
             Players = Players[RList[Reverse]:] + Players[:RList[Reverse]]

@@ -35,8 +35,12 @@ def Send(C, Message):
 
 def Get(C):
     try:
-        Message = C.recv(4096).decode()
-        return Message
+        Manager = Manager()
+        Return = Manager.dict()
+        P = Process(target=C.recv(), args(4096, ))
+        P.start()
+        P.join()
+        return Return.values().decode()
     except Exception as e:
         if PrintErrors:
             print(f"ConnectionError: {e.__class__.__name__}")
