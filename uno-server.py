@@ -20,7 +20,7 @@ class Card:
 
 def Ask(C, Question, InputText):
     Send(C, f"{Question}`y`{InputText}")
-    Message = Get(C)
+    Message = Get(C)  # Stops on second player (Doesn't get message)
     return Message
 
 def SendToAll(Message):
@@ -61,7 +61,8 @@ def Turn(Player):
             Ints.append(i)
         i = i + 1
 
-    SendToAll(f"{Player.Name}'s turn!\n{Player.Name} has {len(Player.Hand)} cards.")
+    SendToAll(
+        f"{Player.Name}'s turn!\n{Player.Name} has {len(Player.Hand)} cards.")
 
     if len(Usable) > 0:
         Send(Player.C, f"Current card: {Top.Out}\nYour cards: {CardOut(Player.Hand)}\nYour usable cards: {CardOut(Usable)}`n`>>> ")
@@ -70,6 +71,7 @@ def Turn(Player):
             try:
                 In = int(Ask(Player.C, f"\nWhat card do you want to play? 1-{str(len(Usable))}", ">>> "))
                 if In < int(len(Usable) + 1) and In > 0:
+                    print("In is in range")
                     In = In - 1
                     break
                 else:
@@ -105,15 +107,19 @@ def Turn(Player):
 
         if Top.Value == "D":
             Draw(Next, 4)
+            print("DRAW 4")
             SendToAll(f"{Next.Name} had to draw 4 cards!")
             Skip = True
         if Top.Value == "D2":
             Draw(Next, 2)
+            print("DRAW 2")
             SendToAll(f"{Next.Name} had to draw 2 cards!")
             Skip = True
         if Top.Value == "S":
+            print("Skip")
             Skip = True
         if Top.Value == "R":
+            print("Reverser")
             Reverse = not Reverse
             SendToAll(f"Reverse!")
             Players = Players[RList[Reverse]:] + Players[:RList[Reverse]]
@@ -129,7 +135,7 @@ def Turn(Player):
         if len(Player.Hand) > 0:
             Send(Player.C, f"You have no usable cards, so you will draw.`n` ")
             Draw(Player, 1)
-            #just kinda stops here because the first connection just closes for no reason
+            # just kinda stops here because the first connection just closes for no reason
         elif len(Player.Hand) < 0:
             SendToAll(f"{Player.Name} won!")
             GameOver = True
@@ -138,13 +144,14 @@ def Turn(Player):
     return Players[0]
 
 Colors = ["R", "G", "B", "Y"]
-Values = ["0", "1", "1", "2", "2", "3", "3", "4", "4", "5", "5", "6", "6", "7", "7", "8", "8", "9", "9", "", "D", "D2", "D2", "S", "S", "R", "R"]
+Values = ["0", "1", "1", "2", "2", "3", "3", "4", "4", "5", "5", "6", "6",
+          "7", "7", "8", "8", "9", "9", "", "D", "D2", "D2", "S", "S", "R", "R"]
 
 Top = Card(Colors[randrange(0, 3)], Values[randrange(0, 18)])
 while Top.Value not in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']:
     Top = Card(Colors[randrange(0, 3)], Values[randrange(0, 18)])
 Players = []
-RList = {False : 1, True : -1}
+RList = {False: 1, True: -1}
 Reverse = False
 GameOver = False
 
@@ -168,4 +175,4 @@ while i < NumberOfPlayers:
 
 Next = Players[0]
 while not GameOver:
-    Next = Turn(Next)
+    Next = Turn(Next) #Start turns
