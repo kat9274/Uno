@@ -3,6 +3,7 @@ Socket = socket() #Start the socket
 PrintErrors = True #Print out the errors
 
 
+
 def Connect(Host, Port):
     try:
         Socket.connect((Host, Port)) #Connect to the provided adress

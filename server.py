@@ -4,7 +4,6 @@ from multiprocessing import Process
 Socket = socket() #Start socket
 PrintErrors = True #Print out the errors
 
-
 def Start(Port):
     try:
         Socket.bind(('', Port)) #Bind the port
