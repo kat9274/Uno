@@ -3,11 +3,13 @@ from random import sample, randrange
 from operator import add, sub
 Start(9274)
 
+
 class Player:
     def __init__(self, Name, C):
         self.Name = Name
         self.Hand = []
         self.C = C
+
 
 class Card:
     def __init__(self, Color, Value):
@@ -18,10 +20,12 @@ class Card:
         self.Value = Value
         self.Out = f"{self.Color}{Value}"
 
+
 def Ask(C, Question, InputText):
     Send(C, f"{Question}`y`{InputText}")
-    Message = Get(C) #Stops on second player (Doesn't get message)
+    Message = Get(C)  # Stops on second player (Doesn't get message)
     return Message
+
 
 def SendToAll(Message):
     if Message:
@@ -31,6 +35,7 @@ def SendToAll(Message):
         Send(Players[i].C, f"{Message}`n` ")
         i = i + 1
 
+
 def CardOut(List):
     Temp = []
     i = 0
@@ -38,6 +43,7 @@ def CardOut(List):
         Temp.append(''.join([List[i].Color, List[i].Value]))
         i = i + 1
     return Temp
+
 
 def Draw(Player, Number):
     global Colors, Values
@@ -47,6 +53,7 @@ def Draw(Player, Number):
     if Number not in [1, 7]:
         SendToAll(f"\n {Player.Name} had to draw {Number} cards.")
     return True
+
 
 def Turn(Player):
     global Top, Players, RList, Reverse, GameOver, Colors, Values
@@ -61,14 +68,17 @@ def Turn(Player):
             Ints.append(i)
         i = i + 1
 
-    SendToAll(f"{Player.Name}'s turn!\n{Player.Name} has {len(Player.Hand)} cards.")
+    SendToAll(
+        f"{Player.Name}'s turn!\n{Player.Name} has {len(Player.Hand)} cards.")
 
     if len(Usable) > 0:
-        Send(Player.C, f"Current card: {Top.Out}\nYour cards: {CardOut(Player.Hand)}\nYour usable cards: {CardOut(Usable)}`n`>>> ")
+        Send(
+            Player.C, f"Current card: {Top.Out}\nYour cards: {CardOut(Player.Hand)}\nYour usable cards: {CardOut(Usable)}`n`>>> ")
 
         while True:
             try:
-                In = int(Ask(Player.C, f"\nWhat card do you want to play? 1-{str(len(Usable))}", ">>> "))
+                In = int(
+                    Ask(Player.C, f"\nWhat card do you want to play? 1-{str(len(Usable))}", ">>> "))
                 if In < int(len(Usable) + 1) and In > 0:
                     print("In is in range")
                     In = In - 1
@@ -84,7 +94,8 @@ def Turn(Player):
         if Top.Color == "W":
             while True:
                 try:
-                    Color = str(Ask(Player.C, f"What color? (r/g/b/y)", ">>> ")).upper()
+                    Color = str(
+                        Ask(Player.C, f"What color? (r/g/b/y)", ">>> ")).upper()
                     if "Y" in Color:
                         Top.Color = "Y"
                     elif "G" in Color:
@@ -134,7 +145,7 @@ def Turn(Player):
         if len(Player.Hand) > 0:
             Send(Player.C, f"You have no usable cards, so you will draw.`n` ")
             Draw(Player, 1)
-            #just kinda stops here because the first connection just closes for no reason
+            # just kinda stops here because the first connection just closes for no reason
         elif len(Player.Hand) < 0:
             SendToAll(f"{Player.Name} won!")
             GameOver = True
@@ -142,14 +153,16 @@ def Turn(Player):
 
     return Players[0]
 
+
 Colors = ["R", "G", "B", "Y"]
-Values = ["0", "1", "1", "2", "2", "3", "3", "4", "4", "5", "5", "6", "6", "7", "7", "8", "8", "9", "9", "", "D", "D2", "D2", "S", "S", "R", "R"]
+Values = ["0", "1", "1", "2", "2", "3", "3", "4", "4", "5", "5", "6", "6",
+          "7", "7", "8", "8", "9", "9", "", "D", "D2", "D2", "S", "S", "R", "R"]
 
 Top = Card(Colors[randrange(0, 3)], Values[randrange(0, 18)])
 while Top.Value not in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']:
     Top = Card(Colors[randrange(0, 3)], Values[randrange(0, 18)])
 Players = []
-RList = {False : 1, True : -1}
+RList = {False: 1, True: -1}
 Reverse = False
 GameOver = False
 
@@ -166,7 +179,8 @@ while True:
 i = 0
 while i < NumberOfPlayers:
     TempConnect = Connect()
-    TempPlayer = Player(Ask(TempConnect, f"What is your name?", f">>> "), TempConnect)
+    TempPlayer = Player(
+        Ask(TempConnect, f"What is your name?", f">>> "), TempConnect)
     Draw(TempPlayer, 7)
     Players.append(TempPlayer)
     i = i + 1

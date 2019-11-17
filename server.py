@@ -4,6 +4,7 @@ from multiprocessing import Process
 Socket = socket()
 PrintErrors = True
 
+
 def Start(Port):
     try:
         Socket.bind(('', Port))
@@ -14,6 +15,7 @@ def Start(Port):
         if PrintErrors:
             print(f"ConnectionError: {e.__class__.__name__} in Start()")
 
+
 def Connect():
     try:
         C, A = Socket.accept()
@@ -23,15 +25,17 @@ def Connect():
         if PrintErrors:
             print(f"ConnectionError: {e.__class__.__name__}")
 
+
 def Send(C, Message):
     try:
         P = Process(target=C.send, args=(f"{Message}".encode(), ))
-        P.start() #Start the process
-        P.join() #Wait to finish
+        P.start()  # Start the process
+        P.join()  # Wait to finish
         return 0
     except Exception as e:
         if PrintErrors:
             print(f"ConnectionError: {e.__class__.__name__}")
+
 
 def Get(C):
     try:

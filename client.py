@@ -2,6 +2,7 @@ from socket import *
 Socket = socket()
 PrintErrors = True
 
+
 def Connect(Host, Port):
     try:
         Socket.connect((Host, Port))
@@ -11,6 +12,7 @@ def Connect(Host, Port):
             print(f"ConnectionError: {e.__class__.__name__}")
         return 1
 
+
 def Send(Message):
     try:
         Socket.send(f"{Message}".encode())
@@ -19,6 +21,7 @@ def Send(Message):
         if PrintErrors:
             print(f"ConnectionError: {e.__class__.__name__}")
         return 1
+
 
 def Get():
     try:
