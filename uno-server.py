@@ -3,13 +3,11 @@ from random import sample, randrange
 from operator import add, sub
 Start(9274)
 
-
 class Player:
     def __init__(self, Name, C):
         self.Name = Name
         self.Hand = []
         self.C = C
-
 
 class Card:
     def __init__(self, Color, Value):
@@ -20,12 +18,10 @@ class Card:
         self.Value = Value
         self.Out = f"{self.Color}{Value}"
 
-
 def Ask(C, Question, InputText):
     Send(C, f"{Question}`y`{InputText}")
     Message = Get(C)  # Stops on second player (Doesn't get message)
     return Message
-
 
 def SendToAll(Message):
     if Message:
@@ -35,7 +31,6 @@ def SendToAll(Message):
         Send(Players[i].C, f"{Message}`n` ")
         i = i + 1
 
-
 def CardOut(List):
     Temp = []
     i = 0
@@ -43,7 +38,6 @@ def CardOut(List):
         Temp.append(''.join([List[i].Color, List[i].Value]))
         i = i + 1
     return Temp
-
 
 def Draw(Player, Number):
     global Colors, Values
@@ -53,7 +47,6 @@ def Draw(Player, Number):
     if Number not in [1, 7]:
         SendToAll(f"\n {Player.Name} had to draw {Number} cards.")
     return True
-
 
 def Turn(Player):
     global Top, Players, RList, Reverse, GameOver, Colors, Values
@@ -144,8 +137,7 @@ def Turn(Player):
     elif len(Usable) == 0:
         if len(Player.Hand) > 0:
             Send(Player.C, f"You have no usable cards, so you will draw.`n` ")
-            Draw(Player, 1)
-            # just kinda stops here because the first connection just closes for no reason
+            Draw(Player, 1)# just kinda stops here because the first connection just closes for no reason
         elif len(Player.Hand) < 0:
             SendToAll(f"{Player.Name} won!")
             GameOver = True
@@ -153,10 +145,8 @@ def Turn(Player):
 
     return Players[0]
 
-
 Colors = ["R", "G", "B", "Y"]
-Values = ["0", "1", "1", "2", "2", "3", "3", "4", "4", "5", "5", "6", "6",
-          "7", "7", "8", "8", "9", "9", "", "D", "D2", "D2", "S", "S", "R", "R"]
+Values = ["0", "1", "1", "2", "2", "3", "3", "4", "4", "5", "5", "6", "6", "7", "7", "8", "8", "9", "9", "", "D", "D2", "D2", "S", "S", "R", "R"]
 
 Top = Card(Colors[randrange(0, 3)], Values[randrange(0, 18)])
 while Top.Value not in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']:

@@ -1,15 +1,13 @@
 from client import *
 
-
 def Parse():
     global GameOver
     Message = Get().split('`')
     print(f"{Message[0]}")
     if Message[1] == 'y':
-        Send(f"{input(f'{Message[2]}')}")  # DOES NOT SHOW ON SECOND PLAYER
+        Send(f"{input(f'{Message[2]}')}")
     elif Message[1] == 'g':
         GameOver = True
-
 
 while True:
     Status = Connect(input(f"Server >>> "), 9274)
